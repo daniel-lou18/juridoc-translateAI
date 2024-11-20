@@ -1,5 +1,5 @@
+import { fetchTranslation } from "@/services/translateService/fetchTranslation";
 import { HtmlContent } from "@/types/BirthCertificate_POR";
-import { createTranslationObject } from "@/utils/extractFromHtml";
 import {
   convertBirthCertificateToState,
   StateObject,
@@ -21,7 +21,8 @@ export function useHtmlTranslate() {
         throw new Error("No html document provided");
       }
 
-      const translationObject = await createTranslationObject(htmlContent);
+      // const translationObject = await createTranslationObject(htmlContent);
+      const translationObject = await fetchTranslation(htmlContent);
       const translationState =
         convertBirthCertificateToState(translationObject);
 

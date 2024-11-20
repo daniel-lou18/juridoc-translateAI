@@ -3,7 +3,7 @@ import {
   MaritalStatusFr,
   MonthFr,
   OfficerPositionFr,
-} from "./birth/BirthCertificateFR";
+} from "./BirthCertificateFR";
 import {
   GenderPt,
   MaritalStatusPt,

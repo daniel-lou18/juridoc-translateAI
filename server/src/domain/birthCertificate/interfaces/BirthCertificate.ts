@@ -11,72 +11,74 @@ import {
   OfficerPositionPt,
 } from "./BirthCertificatePT";
 
+type StringOrNull = string | null;
+
 export interface RegistryOffice {
-  municipality: string;
-  birthRecordNumber: string;
-  birthRecordYear: string;
+  municipality: StringOrNull;
+  birthRecordNumber: StringOrNull;
+  birthRecordYear: StringOrNull;
 }
 
 interface Birthplace {
-  parish: string;
-  municipality: string;
+  parish: StringOrNull;
+  municipality: StringOrNull;
 }
 
 interface UsualResidence {
-  place: string;
-  parish: string;
-  municipality: string;
+  place: StringOrNull;
+  parish: StringOrNull;
+  municipality: StringOrNull;
 }
 
-interface BirthTimeAndDate extends Date {
-  hours: string;
-  minutes: string;
+export interface BirthTimeAndDate extends Date {
+  hours: StringOrNull;
+  minutes: StringOrNull;
 }
 
-type MultiLangMonth = MonthFr | MonthPt;
+export type MultiLangMonth = MonthFr | MonthPt;
 
-export interface Date<T extends string = MultiLangMonth> {
-  day: string;
+export interface Date<T extends StringOrNull = MultiLangMonth> {
+  day: StringOrNull;
   month: T;
-  year: string;
+  year: StringOrNull;
 }
 
-type MultiLangStatus = MaritalStatusFr | MaritalStatusPt;
+export type MultiLangStatus = MaritalStatusFr | MaritalStatusPt;
 
-interface Person<T extends string = MultiLangStatus> {
-  name: string;
-  age: string;
+interface Person<T extends StringOrNull = MultiLangStatus> {
+  name: StringOrNull;
+  age: StringOrNull;
   status: T;
   birthplace: Birthplace;
   usualResidence: UsualResidence;
 }
 
-type MultiLangGender = GenderFr | GenderPt;
+export type MultiLangGender = GenderFr | GenderPt;
 
-interface Registrant<T extends string = MultiLangGender> {
-  firstName: string;
-  surname: string;
+interface Registrant<T extends StringOrNull = MultiLangGender> {
+  firstName: StringOrNull;
+  surname: StringOrNull;
   gender: T;
   birthTimeAndDate: BirthTimeAndDate;
   birthplace: Birthplace;
 }
 
-type MultiLangOfficerPosition = OfficerPositionFr | OfficerPositionPt;
+export type MultiLangOfficerPosition = OfficerPositionFr | OfficerPositionPt;
 
-export interface Officer<T extends string = MultiLangOfficerPosition> {
+export interface Officer<T extends StringOrNull = MultiLangOfficerPosition> {
   position: T;
-  name: string;
-  qualification?: string;
-  office?: string;
+  name: StringOrNull;
+  qualification?: StringOrNull;
+  office?: StringOrNull;
 }
 
 export interface Amendment {
-  number: string;
-  date: string;
-  description: string;
+  number: StringOrNull;
+  date: StringOrNull;
+  description: StringOrNull;
   responsible: {
-    person: string;
-    office: string;
+    person: StringOrNull;
+    office: StringOrNull;
   };
 }
 
@@ -85,13 +87,13 @@ export interface BirthCertificate {
   registrant: Registrant;
   father: Person;
   mother: Person;
-  paternalGrandparents: string;
-  maternalGrandparents: string;
-  declarant: string;
-  specialMentions: string;
-  witnesses: string;
+  paternalGrandparents: StringOrNull;
+  maternalGrandparents: StringOrNull;
+  declarant: StringOrNull;
+  specialMentions: StringOrNull;
+  witnesses: StringOrNull;
   birthRecordDate: Date<MonthFr | MonthPt>;
   officer: Officer;
-  processNumber: string;
+  processNumber: StringOrNull;
   amendments: Amendment[];
 }

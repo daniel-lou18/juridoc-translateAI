@@ -10,14 +10,16 @@ export type MonthPt =
   | "Setembro"
   | "Outubro"
   | "Novembro"
-  | "Dezembro";
+  | "Dezembro"
+  | null;
 
 export type MaritalStatusPt =
   | "Solteiro(a)" // Single
   | "Casado(a)" // Married
   | "Divorciado(a)" // Divorced
   | "Viúvo(a)" // Widowed
-  | "União Estável"; // In a civil union
+  | "União Estável" // In a civil union
+  | null;
 
 export type OfficerPositionPt =
   | "Oficial de registos"
@@ -29,6 +31,7 @@ export type OfficerPositionPt =
   | "Substituto(a)"
   | "Oficial do Registro Civil"
   | "Delegado(a)"
-  | "Chefe de Cartório";
+  | "Chefe de Cartório"
+  | null;
 
-export type GenderPt = "Masculino" | "Feminino";
+export type GenderPt = "Masculino" | "Feminino" | null;
