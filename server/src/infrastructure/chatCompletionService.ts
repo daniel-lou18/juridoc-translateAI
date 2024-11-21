@@ -5,6 +5,10 @@ export type SuccessResponse = string;
 
 const API_KEY = process.env.HF_API_KEY;
 
+if (!API_KEY) {
+  throw new Error("Missing HF_API_KEY environment variable");
+}
+
 type InferenceConfig = {
   model: string;
   role: "user" | "system";
