@@ -4,7 +4,7 @@ dotenv.config();
 import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import morgan from "morgan";
-import { createBirthCertificate } from "./infrastructure/controllers/birthCertificateController";
+import birthCertificateRoutes from "./presentation/routes/birthCertificateRoutes";
 
 const PORT = process.env.PORT || 4000;
 
@@ -24,7 +24,7 @@ app.get("/", (req: Request, res: Response) => {
   res.status(200).json({ status: "success", message: "Hello" });
 });
 
-app.post("/api/certificates", createBirthCertificate);
+app.use("/api/certificates", birthCertificateRoutes);
 
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
   res.status(400).json({

@@ -2,7 +2,6 @@ import { HfInference } from "@huggingface/inference";
 import { IChatCompletionService } from "../application/birthCertificate/services/translateService";
 
 const API_KEY = process.env.HF_API_KEY;
-console.log(process.env);
 
 const inference = new HfInference(API_KEY);
 

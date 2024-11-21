@@ -1,9 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import {
-  generateBirthCertificate,
-  HtmlContent,
-} from "../../application/birthCertificate/services";
-import { deserializeHtml } from "../deserializeHtml";
+import { generateBirthCertificate } from "../../application/birthCertificate/services";
+import { deserializeHtml } from "../../infrastructure/deserializeHtml";
 
 export async function createBirthCertificate(
   req: Request,
