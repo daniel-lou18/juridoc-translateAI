@@ -21,6 +21,11 @@ class TranslateService implements ITranslateService {
     private promptConstructor: IPromptConstructor
   ) {}
 
+  // Loop through all keys of map/dictionary
+  // If text fragment contains key >>> translate text by providing a template to the llm service
+  // This template is stored as a string value associated with the key
+  // The idx parameter is only there to provide info in case of an error
+
   async translateAnnotationLlm(
     text: string,
     annotationsMap: Record<string, string>,
