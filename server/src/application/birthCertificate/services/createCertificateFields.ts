@@ -3,6 +3,10 @@ import {
   BirthTimeAndDate,
 } from "../../../domain/birthCertificate/interfaces/BirthCertificate";
 import {
+  birthCertificateFieldMappings,
+  parseValueFields,
+} from "../../../domain/birthCertificate/interfaces/BirthCertificateKeyMap_PT";
+import {
   GenderPt,
   MaritalStatusPt,
   MonthPt,
@@ -21,6 +25,11 @@ export function createCertificateFields(
       year: dateTimeString?.match(/de\s*(\d{4})\s*\*\*\*/)?.[1] || null,
     };
   };
+
+  const result = parseValueFields(fields, birthCertificateFieldMappings);
+  console.log(result);
+
+  throw new Error("j");
 
   const birthCertificate = {
     registryOffice: {

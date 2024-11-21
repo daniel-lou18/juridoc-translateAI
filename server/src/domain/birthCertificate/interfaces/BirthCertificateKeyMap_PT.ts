@@ -1,19 +1,52 @@
+const object = {};
+
+export function parseValueFields<
+  T extends Record<string, object>,
+  M extends string
+>(
+  fields: Record<M, string>,
+  fieldMappings: T,
+  totalResult: Record<string, any> = {}
+) {
+  const result = {};
+  for (const key in fieldMappings) {
+    const value = fieldMappings[key];
+    if (
+      typeof value === "string" ||
+      value instanceof RegExp ||
+      key in totalResult
+    ) {
+      continue;
+    }
+    if ("sourceKey" in value && "pattern" in value) {
+      result[key] =
+        fields[value.sourceKey as M].match(value.pattern)?.[1] ||
+        fields[value.sourceKey as M].match(value.pattern)?.[0];
+      continue;
+    }
+    if ("sourceKey" in value && "cleanup" in value) {
+      result[key] = fields[value.sourceKey as M]?.replace(value.cleanup, "");
+      continue;
+    }
+    result[key] = parseValueFields(fields, value, result);
+  }
+
+  return result;
+}
+
 export const birthCertificateFieldMappings = {
   registryOffice: {
-    sourceKey: "Conservatória",
-    subFields: {
-      municipality: {
-        pattern: /(?:Civil|Predial|Comercial)\s*(.*)/,
-        fallback: "full", // Use full source value if pattern doesn't match
-      },
-      birthRecordNumber: {
-        sourceKey: "Assento",
-        pattern: /\d+/,
-      },
-      birthRecordYear: {
-        sourceKey: "Assento",
-        pattern: /\d{4}\b(?!.*\d)/,
-      },
+    municipality: {
+      sourceKey: "Conservatória",
+      pattern: /(?:Civil|Predial|Comercial)\s*(.*)/,
+    },
+    birthRecordNumber: {
+      sourceKey: "Assento",
+      pattern: /\d+/,
+    },
+    birthRecordYear: {
+      sourceKey: "Assento",
+      pattern: /\d{4}\b(?!.*\d)/,
     },
   },
   registrant: {
@@ -37,12 +70,10 @@ export const birthCertificateFieldMappings = {
       parish: {
         sourceKey: "Naturalidade",
         pattern: /(\w+[\wÀ-ÿ]*) \*\*\*/,
-        groupIndex: 1,
       },
       municipality: {
         sourceKey: "Naturalidade",
         pattern: /(\w+[\wÀ-ÿ]*) \*\*\*$/,
-        groupIndex: 1,
       },
     },
   },
@@ -54,7 +85,6 @@ export const birthCertificateFieldMappings = {
     age: {
       sourceKey: "Idade",
       pattern: /(\d+)/,
-      groupIndex: 1,
     },
     status: {
       sourceKey: "Estado",
@@ -64,29 +94,24 @@ export const birthCertificateFieldMappings = {
       parish: {
         sourceKey: "Naturalidade-Pai",
         pattern: /(\w+[\wÀ-ÿ]*) \*\*\*/,
-        groupIndex: 1,
       },
       municipality: {
         sourceKey: "Naturalidade-Pai",
         pattern: /(\w+[\wÀ-ÿ]*) \*\*\*$/,
-        groupIndex: 1,
       },
     },
     usualResidence: {
       place: {
         sourceKey: "Residência habitual",
         pattern: /(\w+[\wÀ-ÿ]*)\s*,/,
-        groupIndex: 1,
       },
       parish: {
         sourceKey: "Residência habitual",
         pattern: /, (\w+[\wÀ-ÿ]*)\s*,/,
-        groupIndex: 1,
       },
       municipality: {
         sourceKey: "Residência habitual",
         pattern: /, (\w+[\wÀ-ÿ]*) \*\*\*/,
-        groupIndex: 1,
       },
     },
   },
@@ -98,7 +123,6 @@ export const birthCertificateFieldMappings = {
     age: {
       sourceKey: "Idade-Mãe",
       pattern: /(\d+)/,
-      groupIndex: 1,
     },
     status: {
       sourceKey: "Estado-Mãe",
@@ -108,29 +132,24 @@ export const birthCertificateFieldMappings = {
       parish: {
         sourceKey: "Naturalidade-Mãe",
         pattern: /(\w+[\wÀ-ÿ]*) \*\*\*/,
-        groupIndex: 1,
       },
       municipality: {
         sourceKey: "Naturalidade-Mãe",
         pattern: /(\w+[\wÀ-ÿ]*) \*\*\*$/,
-        groupIndex: 1,
       },
     },
     usualResidence: {
       place: {
         sourceKey: "Residência habitual-Mãe",
         pattern: /(\w+[\wÀ-ÿ]*)\s*,/,
-        groupIndex: 1,
       },
       parish: {
         sourceKey: "Residência habitual-Mãe",
         pattern: /, (\w+[\wÀ-ÿ]*)\s*,/,
-        groupIndex: 1,
       },
       municipality: {
         sourceKey: "Residência habitual-Mãe",
         pattern: /, (\w+[\wÀ-ÿ]*) \*\*\*/,
-        groupIndex: 1,
       },
     },
   },
@@ -158,42 +177,32 @@ export const birthCertificateFieldMappings = {
     day: {
       sourceKey: "Data do assento",
       pattern: /(\d{2})/,
-      groupIndex: 0,
     },
     month: {
       sourceKey: "Data do assento",
       pattern: /de (\w+)/,
-      groupIndex: 1,
     },
     year: {
       sourceKey: "Data do assento",
       pattern: /de (\d{4})/,
-      groupIndex: 1,
     },
   },
   officer: {
     position: {
       sourceKey: "O/A",
       pattern: /(?<=O\/A\s)([^,]+)/,
-      groupIndex: 1,
-      transform: "trim",
     },
     name: {
       sourceKey: "O/A",
       pattern: /(?<=,)([^,]+)(?=,)/,
-      groupIndex: 1,
-      transform: "trim",
     },
     qualification: {
       sourceKey: "O/A",
       pattern: /(?<=,)([^,]+)$/,
-      groupIndex: 1,
-      transform: "trim",
     },
   },
   processNumber: {
     sourceKey: "Processo",
     pattern: /(\d+\/\s*\d+)$/,
-    groupIndex: 0,
   },
 } as const;
