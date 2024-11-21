@@ -2,11 +2,7 @@ import { Amendment } from "../../../domain/birthCertificate/interfaces/BirthCert
 import translateService from "./translateService";
 
 export interface ITranslateService {
-  translateAnnotationLlm(
-    text: string,
-    annotationsMap: Record<string, string>,
-    idx: number
-  ): Promise<string>;
+  translateAnnotationLlm(text: string, template: string): Promise<string>;
 }
 
 type CreateAnnotations = (
@@ -39,22 +35,36 @@ class TranslateAnnotationsService {
           responsible,
         } = createAnnotations(annotations, idx);
 
-        const result = await this.translateService.translateAnnotationLlm(
-          annotations[idx + 1],
-          annotationsMap,
-          idx
-        );
+        const nextLine = annotations[idx + 1];
+        const annotationsTemplate = this.getTemplate(nextLine, annotationsMap);
+        let result;
+
+        if (annotationsTemplate) {
+          result = await this.translateService.translateAnnotationLlm(
+            nextLine,
+            annotationsTemplate
+          );
+        } else {
+          result = nextLine;
+        }
 
         results[parseInt(number) - 1] = {
           number,
-          description: result || "",
+          description: result,
           date,
           responsible,
         };
       }
     }
-
     return results;
+  }
+
+  private getTemplate(textSegment: string, dictionary: Record<string, string>) {
+    const annotationsTemplate = Object.entries(dictionary).filter(([key]) =>
+      textSegment.includes(key)
+    )?.[0]?.[1];
+
+    return annotationsTemplate;
   }
 }
 

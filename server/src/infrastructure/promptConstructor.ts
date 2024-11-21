@@ -3,8 +3,8 @@ import { IPromptConstructor } from "../application/birthCertificate/services/tra
 class PromptConstructor implements IPromptConstructor {
   createTranslateSegmentPrompt(
     sourceText: string,
-    sourceLang: string,
     targetTemplate: string,
+    sourceLang: string,
     targetLang: string,
     docType = "birth certificate"
   ) {
