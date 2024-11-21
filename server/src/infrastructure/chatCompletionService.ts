@@ -1,29 +1,50 @@
 import { HfInference } from "@huggingface/inference";
 import { IChatCompletionService } from "../application/birthCertificate/services/translateService";
 
-const API_KEY = process.env.HF_API_KEY;
-
-const inference = new HfInference(API_KEY);
-
 export type SuccessResponse = string;
 
+const API_KEY = process.env.HF_API_KEY;
+
+type InferenceConfig = {
+  model: string;
+  role: "user" | "system";
+  max_tokens: number;
+  temperature: number;
+  top_p: number;
+};
+
 class ChatCompletionService implements IChatCompletionService {
+  private inference: HfInference;
+  private readonly config: InferenceConfig;
+
+  constructor(apiKey: string, config?: InferenceConfig) {
+    this.inference = new HfInference(apiKey);
+    this.config = config || {
+      model: "meta-llama/Meta-Llama-3-8B-Instruct",
+      role: "user",
+      max_tokens: 5000,
+      temperature: 0.7,
+      top_p: 0.95,
+    };
+  }
+
   async getChatCompletion(prompt: string): Promise<SuccessResponse> {
-    console.log(API_KEY);
+    const { model, role, max_tokens, temperature, top_p } = this.config;
+
     try {
       let text = "";
 
-      for await (const chunk of inference.chatCompletionStream({
-        model: "meta-llama/Meta-Llama-3-8B-Instruct",
+      for await (const chunk of this.inference.chatCompletionStream({
+        model,
         messages: [
           {
-            role: "user",
+            role,
             content: prompt,
           },
         ],
-        max_tokens: 5000,
-        temperature: 0.7,
-        top_p: 0.95,
+        max_tokens,
+        temperature,
+        top_p,
       })) {
         text += chunk.choices[0]?.delta?.content || "";
       }
@@ -48,4 +69,4 @@ class ChatCompletionService implements IChatCompletionService {
   }
 }
 
-export default new ChatCompletionService();
+export default new ChatCompletionService(API_KEY!);
