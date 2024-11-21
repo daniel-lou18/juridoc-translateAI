@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "node --loader tsx --import dotenv/config src/index.ts",
-    "start": "node --loader tsx --import dotenv/config src/index.ts"
+    "start": "node --loader ts-node/esm src/index.ts",
+    "dev": "tsx watch src/index.ts"
   },
   "type": "module",
   "keywords": [],

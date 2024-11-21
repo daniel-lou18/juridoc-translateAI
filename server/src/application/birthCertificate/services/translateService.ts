@@ -1,3 +1,5 @@
+import chatCompletionService from "../../../infrastructure/chatCompletionService";
+import promptConstructor from "../../../infrastructure/promptConstructor";
 import { ITranslateService } from "./translateAnnotations";
 
 export interface IChatCompletionService {
@@ -14,18 +16,21 @@ export interface IPromptConstructor {
 }
 
 class TranslateService implements ITranslateService {
+  constructor(
+    private chatCompletionService: IChatCompletionService,
+    private promptConstructor: IPromptConstructor
+  ) {}
+
   async translateAnnotationLlm(
     text: string,
     annotationsMap: Record<string, string>,
-    idx: number,
-    { getChatCompletion }: IChatCompletionService,
-    { createTranslateSegmentPrompt }: IPromptConstructor
+    idx: number
   ) {
     for (const key of Object.keys(annotationsMap)) {
       if (text.includes(key)) {
         try {
-          const result = await getChatCompletion(
-            createTranslateSegmentPrompt(
+          const result = await this.chatCompletionService.getChatCompletion(
+            this.promptConstructor.createTranslateSegmentPrompt(
               text,
               "Portuguese",
               annotationsMap[key as keyof typeof annotationsMap],
@@ -51,4 +56,4 @@ class TranslateService implements ITranslateService {
   }
 }
 
-export default new TranslateService();
+export default new TranslateService(chatCompletionService, promptConstructor);
