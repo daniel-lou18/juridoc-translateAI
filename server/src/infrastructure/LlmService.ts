@@ -1,5 +1,5 @@
 import { HfInference } from "@huggingface/inference";
-import { IChatCompletionService } from "../application/birthCertificate/services/translateService";
+import { ILlmService } from "../application/birthCertificate/services/translateService";
 
 export type SuccessResponse = string;
 
@@ -17,7 +17,7 @@ type InferenceConfig = {
   top_p: number;
 };
 
-class ChatCompletionService implements IChatCompletionService {
+class LlmService implements ILlmService {
   private inference: HfInference;
   private readonly config: InferenceConfig;
 
@@ -73,4 +73,4 @@ class ChatCompletionService implements IChatCompletionService {
   }
 }
 
-export default new ChatCompletionService(API_KEY!);
+export default new LlmService(API_KEY!);

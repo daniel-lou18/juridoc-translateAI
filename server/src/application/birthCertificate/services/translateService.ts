@@ -1,8 +1,8 @@
-import chatCompletionService from "../../../infrastructure/chatCompletionService";
+import llmService from "../../../infrastructure/LlmService";
 import promptConstructor from "../../../infrastructure/promptConstructor";
 import { ITranslateService } from "./translateAnnotationsService";
 
-export interface IChatCompletionService {
+export interface ILlmService {
   getChatCompletion(prompt: string): Promise<string>;
 }
 export interface IPromptConstructor {
@@ -17,7 +17,7 @@ export interface IPromptConstructor {
 
 class TranslateService implements ITranslateService {
   constructor(
-    private chatCompletionService: IChatCompletionService,
+    private chatCompletionService: ILlmService,
     private promptConstructor: IPromptConstructor
   ) {}
 
@@ -51,4 +51,4 @@ class TranslateService implements ITranslateService {
   }
 }
 
-export default new TranslateService(chatCompletionService, promptConstructor);
+export default new TranslateService(llmService, promptConstructor);
