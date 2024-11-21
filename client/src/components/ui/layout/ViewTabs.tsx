@@ -18,7 +18,11 @@ export default function ViewTabs({ tabsData, isTranslated }: ViewTabsProps) {
       {createPortal(
         <TabsList>
           {tabsData.map(({ triggerValue }) => (
-            <TabsTrigger value={triggerValue} className="capitalize">
+            <TabsTrigger
+              key={triggerValue}
+              value={triggerValue}
+              className="capitalize"
+            >
               {triggerValue}
             </TabsTrigger>
           ))}
@@ -27,7 +31,9 @@ export default function ViewTabs({ tabsData, isTranslated }: ViewTabsProps) {
         document.getElementById("tabs-portal") || document.body
       )}
       {tabsData.map(({ triggerValue, component }) => (
-        <TabsContent value={triggerValue}>{component}</TabsContent>
+        <TabsContent key={triggerValue} value={triggerValue}>
+          {component}
+        </TabsContent>
       ))}
       <TabsContent value="all">
         {tabsData.map(({ component }) => component)}
