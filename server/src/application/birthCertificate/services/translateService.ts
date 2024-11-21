@@ -1,6 +1,6 @@
 import chatCompletionService from "../../../infrastructure/chatCompletionService";
 import promptConstructor from "../../../infrastructure/promptConstructor";
-import { ITranslateService } from "./translateAnnotations";
+import { ITranslateService } from "./translateAnnotationsService";
 
 export interface IChatCompletionService {
   getChatCompletion(prompt: string): Promise<string>;

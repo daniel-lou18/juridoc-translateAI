@@ -7,8 +7,7 @@ import { createAnnotations } from "./createAnnotations";
 import { createCertificateFields } from "./createCertificateFields";
 import { extractAnnotations } from "./extractAnnotations";
 import { extractCertificateFields } from "./extractCertificateFields";
-import { translateAnnotations } from "./translateAnnotations";
-import translateService from "./translateService";
+import translateAnnotationsService from "./translateAnnotationsService";
 
 export type HtmlContent = [Element, Element] | Element;
 
@@ -38,12 +37,12 @@ export async function generateBirthCertificate(
     getRows,
     getAnnotationsFromRows
   );
-  const birthCertificateAnnotations = await translateAnnotations(
-    certificateAnnotations,
-    annotationsMapPtFr,
-    createAnnotations,
-    translateService
-  );
+  const birthCertificateAnnotations =
+    await translateAnnotationsService.translateAnnotations(
+      certificateAnnotations,
+      annotationsMapPtFr,
+      createAnnotations
+    );
 
   return {
     ...birthCertificateFields,
