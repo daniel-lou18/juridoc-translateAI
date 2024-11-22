@@ -3,11 +3,13 @@ import { BirthCertificate } from "../../../domain/birthCertificate/interfaces/Bi
 import { getAnnotationsFromRows } from "../../getAnnotationsFromRows";
 import { getFieldsFromRows } from "../../getFieldsFromRows";
 import { getRows } from "../../getRows";
+import { birthCertificateFieldMappings } from "./BirthCertificateKeyMap_PT";
 import { createAnnotations } from "./createAnnotations";
 import { createCertificateFields } from "./createCertificateFields";
 import { extractAnnotations } from "./extractAnnotations";
 import { extractCertificateFields } from "./extractCertificateFields";
 import translateAnnotationsService from "./translateAnnotationsService";
+import { translateCertificateFields } from "./translateCertificateFields";
 
 export type HtmlContent = [Element, Element] | Element;
 
@@ -23,11 +25,19 @@ export async function generateBirthCertificate(
     getRows,
     getFieldsFromRows
   );
-  const birthCertificateFields = createCertificateFields(certificateFields);
+
+  const birthCertificateFields = createCertificateFields(
+    certificateFields,
+    birthCertificateFieldMappings
+  );
+
+  const translatedCertificateFields = translateCertificateFields(
+    birthCertificateFields as Omit<BirthCertificate, "amendments">
+  );
 
   if (!annotationsHtml) {
     return {
-      ...birthCertificateFields,
+      ...translatedCertificateFields,
       amendments: [],
     };
   }
@@ -45,7 +55,7 @@ export async function generateBirthCertificate(
     );
 
   return {
-    ...birthCertificateFields,
+    ...translatedCertificateFields,
     amendments: birthCertificateAnnotations,
   };
 }

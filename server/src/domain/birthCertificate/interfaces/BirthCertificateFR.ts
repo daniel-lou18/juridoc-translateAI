@@ -10,16 +10,14 @@ export type MonthFr =
   | "septembre"
   | "octobre"
   | "novembre"
-  | "decembre"
-  | null;
+  | "decembre";
 
 export type MaritalStatusFr =
   | "Célibataire"
   | "Marié(e)"
   | "Divorcé(e)"
   | "Veuf/Veuve"
-  | "Pacsé(e)"
-  | null;
+  | "Pacsé(e)";
 
 export type OfficerPositionFr =
   | "Officier d'état civil" // Oficial de registos / Oficial do Registro Civil
@@ -31,7 +29,6 @@ export type OfficerPositionFr =
   | "Substitut(e)" // Substituto(a)
   | "Délégué(e)" // Delegado(a)
   | "Chef de Bureau" // Chefe de Cartório
-  | "Clerc de l'état civil"
-  | null;
+  | "Clerc de l'état civil";
 
-export type GenderFr = "Masculin" | "Féminin" | null;
+export type GenderFr = "Masculin" | "Féminin";

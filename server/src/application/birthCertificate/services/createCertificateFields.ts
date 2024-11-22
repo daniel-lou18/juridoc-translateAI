@@ -1,8 +1,9 @@
-import { BirthCertificate } from "../../../domain/birthCertificate/interfaces/BirthCertificate";
 import { birthCertificateFieldMappings } from "./BirthCertificateKeyMap_PT";
 import { parseValueFields } from "./parseValueFields";
 
-const parseDateTime = (dateTimeString: string) => {
+const parseDateTime = (dateTimeString: string | null) => {
+  if (!dateTimeString) return null;
+
   return {
     hours: dateTimeString?.match(/(\d+)\s*horas/)?.[1] || null,
     minutes: dateTimeString?.match(/(\d+)\s*minutos/)?.[1] || null,
@@ -12,23 +13,18 @@ const parseDateTime = (dateTimeString: string) => {
   };
 };
 
-type AdjustFieldType<T, K extends keyof T, NewType> = Omit<T, K> & {
-  [P in K]: NewType;
-};
-
 export function createCertificateFields(
-  fields: Record<string, string>
-): Omit<BirthCertificate, "amendments"> {
-  const result = parseValueFields(fields, birthCertificateFieldMappings);
+  fields: Record<string, string>,
+  fieldMappings: typeof birthCertificateFieldMappings
+) {
+  const result = parseValueFields(fields, fieldMappings);
 
-  if (result.registrant.birthTimeAndDate) {
-    const newBirthTimeAndDate = parseDateTime(
-      result.registrant.birthTimeAndDate
-    );
-    // Issue: correct TS error due to birthTimeAndDate being typed as a string
-    (result.registrant as any).birthTimeAndDate = newBirthTimeAndDate;
-  }
+  const newBirthTimeAndDate = parseDateTime(result.registrant.birthTimeAndDate);
 
-  console.log(result);
-  return result;
+  const resultWithTimeAndDate = {
+    ...result,
+    registrant: { ...result.registrant, birthTimeAndDate: newBirthTimeAndDate },
+  };
+
+  return resultWithTimeAndDate;
 }

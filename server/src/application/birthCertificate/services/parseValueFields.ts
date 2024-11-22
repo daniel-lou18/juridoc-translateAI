@@ -1,7 +1,7 @@
 type SourceNode = { sourceKey: string };
 type PatternNode = { pattern: RegExp } & SourceNode;
 type CleanupNode = { cleanup: string } & SourceNode;
-interface FieldMappings<M extends string> {
+export interface FieldMappings<M extends string> {
   [key: string]: PatternNode | CleanupNode | FieldMappings<M>;
 }
 
@@ -23,6 +23,7 @@ export function parseValueFields<M extends string, T extends FieldMappings<M>>(
   const result: Record<string, any> = {};
   for (const key in fieldMappings) {
     const value = fieldMappings[key];
+
     if (
       typeof value === "string" ||
       value instanceof RegExp ||
@@ -30,22 +31,28 @@ export function parseValueFields<M extends string, T extends FieldMappings<M>>(
     ) {
       continue;
     }
+
     if ("sourceKey" in value && "pattern" in value) {
       result[key] =
-        fields[value.sourceKey as M].match(value.pattern as RegExp)?.[1] ||
-        fields[value.sourceKey as M].match(value.pattern as RegExp)?.[0] ||
+        fields[value.sourceKey as M]
+          .match(value.pattern as RegExp)?.[1]
+          ?.trim() ||
+        fields[value.sourceKey as M]
+          .match(value.pattern as RegExp)?.[0]
+          ?.trim() ||
         null;
       continue;
     }
+
     if ("sourceKey" in value && "cleanup" in value) {
-      result[key] = fields[value.sourceKey as M]?.replace(
-        value.cleanup as string,
-        ""
-      );
+      result[key] = fields[value.sourceKey as M]
+        ?.replace(value.cleanup as string, "")
+        ?.trim();
       continue;
     }
+
     result[key] = parseValueFields(fields, value, result);
   }
 
-  return result as ResultType<typeof fieldMappings>;
+  return result as ResultType<T>;
 }

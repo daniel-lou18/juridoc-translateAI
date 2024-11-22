@@ -30,7 +30,7 @@ export const monthMapPtFr: Record<MonthPt, MonthFr> = {
 
 export const maritalStatusMapPtFr: Record<MaritalStatusPt, MaritalStatusFr> = {
   "Solteiro(a)": "Célibataire",
-  "Casado(a)": "Divorcé(e)",
+  "Casado(a)": "Marié(e)",
   "Divorciado(a)": "Divorcé(e)",
   "Viúvo(a)": "Veuf/Veuve",
   "União Estável": "Pacsé(e)",
@@ -55,4 +55,8 @@ export const officerPositionMapPtFr: Record<
 export const genderMapPtFr: Record<GenderPt, GenderFr> = {
   Masculino: "Masculin",
   Feminino: "Féminin",
+};
+
+export const officerQualificationMapPtFr: Record<string, string> = {
+  "Por competência própria": "Par ses compétences",
 };

@@ -35,7 +35,7 @@ export interface BirthTimeAndDate extends Date {
   minutes: StringOrNull;
 }
 
-export type MultiLangMonth = MonthFr | MonthPt;
+export type MultiLangMonth = MonthFr | MonthPt | null;
 
 export interface Date<T extends StringOrNull = MultiLangMonth> {
   day: StringOrNull;
@@ -43,7 +43,7 @@ export interface Date<T extends StringOrNull = MultiLangMonth> {
   year: StringOrNull;
 }
 
-export type MultiLangStatus = MaritalStatusFr | MaritalStatusPt;
+export type MultiLangStatus = MaritalStatusFr | MaritalStatusPt | null;
 
 interface Person<T extends StringOrNull = MultiLangStatus> {
   name: StringOrNull;
@@ -53,7 +53,7 @@ interface Person<T extends StringOrNull = MultiLangStatus> {
   usualResidence: UsualResidence;
 }
 
-export type MultiLangGender = GenderFr | GenderPt;
+export type MultiLangGender = GenderFr | GenderPt | null;
 
 interface Registrant<T extends StringOrNull = MultiLangGender> {
   firstName: StringOrNull;
@@ -63,7 +63,10 @@ interface Registrant<T extends StringOrNull = MultiLangGender> {
   birthplace: Birthplace;
 }
 
-export type MultiLangOfficerPosition = OfficerPositionFr | OfficerPositionPt;
+export type MultiLangOfficerPosition =
+  | OfficerPositionFr
+  | OfficerPositionPt
+  | null;
 
 export interface Officer<T extends StringOrNull = MultiLangOfficerPosition> {
   position: T;
@@ -92,8 +95,12 @@ export interface BirthCertificate {
   declarant: StringOrNull;
   specialMentions: StringOrNull;
   witnesses: StringOrNull;
-  birthRecordDate: Date<MonthFr | MonthPt>;
+  birthRecordDate: Date;
   officer: Officer;
   processNumber: StringOrNull;
   amendments: Amendment[];
 }
+
+export type StringOrNullify<T> = {
+  [K in keyof T]: T[K] extends object ? StringOrNullify<T[K]> : string | null;
+};
