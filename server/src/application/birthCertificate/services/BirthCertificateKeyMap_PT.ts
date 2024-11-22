@@ -1,39 +1,3 @@
-const object = {};
-
-export function parseValueFields<
-  T extends Record<string, object>,
-  M extends string
->(
-  fields: Record<M, string>,
-  fieldMappings: T,
-  totalResult: Record<string, any> = {}
-) {
-  const result = {};
-  for (const key in fieldMappings) {
-    const value = fieldMappings[key];
-    if (
-      typeof value === "string" ||
-      value instanceof RegExp ||
-      key in totalResult
-    ) {
-      continue;
-    }
-    if ("sourceKey" in value && "pattern" in value) {
-      result[key] =
-        fields[value.sourceKey as M].match(value.pattern)?.[1] ||
-        fields[value.sourceKey as M].match(value.pattern)?.[0];
-      continue;
-    }
-    if ("sourceKey" in value && "cleanup" in value) {
-      result[key] = fields[value.sourceKey as M]?.replace(value.cleanup, "");
-      continue;
-    }
-    result[key] = parseValueFields(fields, value, result);
-  }
-
-  return result;
-}
-
 export const birthCertificateFieldMappings = {
   registryOffice: {
     municipality: {
@@ -64,7 +28,7 @@ export const birthCertificateFieldMappings = {
     },
     birthTimeAndDate: {
       sourceKey: "Hora e data do nascimento",
-      parser: "parseDateTime", // Reference to custom parser function
+      cleanup: " ***", // Will be parsed in a second step with a custom parser function
     },
     birthplace: {
       parish: {
@@ -205,4 +169,4 @@ export const birthCertificateFieldMappings = {
     sourceKey: "Processo",
     pattern: /(\d+\/\s*\d+)$/,
   },
-} as const;
+};
