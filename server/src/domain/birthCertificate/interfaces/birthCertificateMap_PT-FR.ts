@@ -58,5 +58,5 @@ export const genderMapPtFr: Record<GenderPt, GenderFr> = {
 };
 
 export const officerQualificationMapPtFr: Record<string, string> = {
-  "Por competência própria": "Par ses compétences",
+  "Por competência própria": "par ses compétences",
 };

@@ -1,10 +1,4 @@
 import { BirthCertificatePages } from "@/hooks/useCertificate";
-import {
-  maritalStatusTranslations,
-  monthsTranslations,
-  officerTextTranslations,
-  officerTitleTranslations,
-} from "./extractInfo";
 
 type StringOrEmptyString = string | "";
 
@@ -158,17 +152,12 @@ export function convertBirthCertificateToState(
           },
           {
             label: "Sexe :",
-            value:
-              gender?.toLowerCase() === "masculino" ? "Masculin" : "Féminin",
+            value: gender,
             id: "gender",
           },
           {
             label: "Heure de naissance :",
-            value: `${hours} heures et ${minutes} minutes, au jour du ${birthDay} ${
-              monthsTranslations[
-                birthMonth?.toLowerCase() as keyof typeof monthsTranslations
-              ]
-            } ${birthYear} `,
+            value: `${hours} heures et ${minutes} minutes, au jour du ${birthDay} ${birthMonth} ${birthYear} `,
             id: "date-of-birth",
           },
           {
@@ -189,10 +178,7 @@ export function convertBirthCertificateToState(
           },
           {
             label: "Etat matrimonial :",
-            value:
-              maritalStatusTranslations[
-                fatherStatus?.toLowerCase() as keyof typeof maritalStatusTranslations
-              ],
+            value: fatherStatus,
             id: "father-status",
           },
           {
@@ -218,10 +204,7 @@ export function convertBirthCertificateToState(
           },
           {
             label: "Etat matrimonial :",
-            value:
-              maritalStatusTranslations[
-                motherStatus?.toLowerCase() as keyof typeof maritalStatusTranslations
-              ],
+            value: motherStatus,
             id: "mother-status",
           },
           {
@@ -271,11 +254,7 @@ export function convertBirthCertificateToState(
           },
           {
             label: "Date d'enregistrement :",
-            value: `le ${registrationDay} ${
-              monthsTranslations[
-                registrationMonth?.toLowerCase() as keyof typeof monthsTranslations
-              ]
-            } ${registrationYear}`,
+            value: `le ${registrationDay} ${registrationMonth} ${registrationYear}`,
             id: "registration-date",
           },
         ],
@@ -285,17 +264,7 @@ export function convertBirthCertificateToState(
         fields: [
           {
             label: "Officier d'état civil :",
-            value: ` O/A ${
-              officerTitleTranslations[
-                officerPosition?.toLowerCase() as keyof typeof officerTitleTranslations
-              ]
-            }, ${officerName}, ${
-              officerTextTranslations[
-                officerComment
-                  ?.toLowerCase()
-                  .trim() as keyof typeof officerTextTranslations
-              ]
-            }`,
+            value: ` O/A ${officerPosition}, ${officerName}, ${officerComment}`,
             id: "officer",
           },
           {

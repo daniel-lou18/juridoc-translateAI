@@ -21,7 +21,6 @@ export function useHtmlTranslate() {
         throw new Error("No html document provided");
       }
 
-      // const translationObject = await createTranslationObject(htmlContent);
       const translationObject = await fetchTranslation(htmlContent);
       const translationState =
         convertBirthCertificateToState(translationObject);

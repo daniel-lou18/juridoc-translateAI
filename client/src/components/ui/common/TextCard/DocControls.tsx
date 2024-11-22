@@ -1,13 +1,12 @@
 import { FileText } from "lucide-react";
 import { Button } from "../../button";
-import { createTranslationDoc } from "@/utils/createDocFile";
 
-const documentOptions = {
-  title: "Translated Document",
-  targetLang: "fr-FR",
-  fontSize: 24, // 12pt
-  spacing: 360, // 1.5 line spacing
-};
+// const documentOptions = {
+//   title: "Translated Document",
+//   targetLang: "fr-FR",
+//   fontSize: 24, // 12pt
+//   spacing: 360, // 1.5 line spacing
+// };
 
 type DocControlsProps = {
   content: string[];
@@ -15,7 +14,7 @@ type DocControlsProps = {
 
 export default function DocControls({ content }: DocControlsProps) {
   async function handleClick() {
-    await createTranslationDoc(content, documentOptions);
+    console.log(content);
   }
 
   return (
