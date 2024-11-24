@@ -1,6 +1,6 @@
 type IHttpRequest = <T>(url: string, options?: RequestInit) => Promise<T>;
 
-interface IHttpClient {
+export interface IHttpClient {
   get<T>(url: string): Promise<T>;
   post<T>(url: string, options: RequestInit): Promise<T>;
 }
@@ -13,7 +13,7 @@ class HttpClient implements IHttpClient {
   }
 
   async post<T>(url: string, options: RequestInit): Promise<T> {
-    return await this.httpRequest(url, options);
+    return await this.httpRequest(url, { method: "POST", ...options });
   }
 }
 
@@ -43,3 +43,5 @@ export async function httpRequest<T>(
     );
   }
 }
+
+export default new HttpClient(httpRequest);

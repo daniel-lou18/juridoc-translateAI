@@ -4,6 +4,7 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import morgan from "morgan";
 import birthCertificateRoutes from "./presentation/routes/birthCertificateRoutes";
+import chatCompletionRoutes from "./presentation/routes/chatCompletionRoutes";
 
 const PORT = process.env.PORT || 4000;
 
@@ -24,6 +25,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/certificates", birthCertificateRoutes);
+app.use("/api/chat", chatCompletionRoutes);
 
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
   res.status(400).json({
