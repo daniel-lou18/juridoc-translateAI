@@ -1,5 +1,5 @@
 import { HfInference } from "@huggingface/inference";
-import { ILlmService } from "../application/birthCertificate/services/translateService";
+import { ILlmService } from "../../application/birthCertificate/services/translateService";
 
 export type SuccessResponse = string;
 

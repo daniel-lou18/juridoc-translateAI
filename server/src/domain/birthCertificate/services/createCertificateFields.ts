@@ -1,4 +1,4 @@
-import { birthCertificateFieldMappings } from "./BirthCertificateKeyMap_PT";
+import { birthCertificateFieldMappings } from "../interfaces/BirthCertificateKeyMap_PT";
 import { parseValueFields } from "./parseValueFields";
 
 const parseDateTime = (dateTimeString: string | null) => {

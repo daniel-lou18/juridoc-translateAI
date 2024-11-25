@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import openAiClient from "../../infrastructure/openAiClient";
+import openAiClient from "../../infrastructure/shared/openAiClient";
 
 export async function generateChatCompletion(
   req: Request,

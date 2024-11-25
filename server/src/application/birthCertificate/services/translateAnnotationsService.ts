@@ -1,5 +1,5 @@
 import { Amendment } from "../../../domain/birthCertificate/interfaces/BirthCertificate";
-import llmService from "../../../infrastructure/LlmService";
+import llmService from "../../../infrastructure/shared/LlmService";
 import { createTranslatePrompt } from "../../shared/promptConstructor";
 
 export interface ILlmService {
