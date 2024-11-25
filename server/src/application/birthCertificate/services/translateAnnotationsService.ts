@@ -1,8 +1,9 @@
 import { Amendment } from "../../../domain/birthCertificate/interfaces/BirthCertificate";
+import { createTranslatePrompt } from "../../shared/promptConstructor";
 import translateService from "./translateService";
 
 export interface ITranslateService {
-  translateAnnotationLlm(text: string, template: string): Promise<string>;
+  translateAnnotationLlm(prompt: string): Promise<string>;
 }
 
 type CreateAnnotations = (
@@ -41,8 +42,12 @@ class TranslateAnnotationsService {
 
         if (annotationsTemplate) {
           result = await this.translateService.translateAnnotationLlm(
-            nextLine,
-            annotationsTemplate
+            createTranslatePrompt(
+              nextLine,
+              annotationsTemplate,
+              "Portuguese",
+              "French"
+            )
           );
         } else {
           result = nextLine;

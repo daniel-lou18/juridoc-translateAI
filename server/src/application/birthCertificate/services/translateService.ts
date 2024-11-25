@@ -1,41 +1,21 @@
 import llmService from "../../../infrastructure/LlmService";
-import promptConstructor from "../../shared/promptConstructor";
 import { ITranslateService } from "./translateAnnotationsService";
 
 export interface ILlmService {
   getChatCompletion(prompt: string): Promise<string>;
 }
-export interface IPromptConstructor {
-  createTranslateSegmentPrompt(
-    sourceText: string,
-    targetTemplate: string,
-    sourceLang: string,
-    targetLang: string,
-    docType?: string
-  ): string;
-}
 
 class TranslateService implements ITranslateService {
-  constructor(
-    private chatCompletionService: ILlmService,
-    private promptConstructor: IPromptConstructor
-  ) {}
+  constructor(private chatCompletionService: ILlmService) {}
 
-  async translateAnnotationLlm(text: string, template: string) {
+  async translateAnnotationLlm(prompt: string) {
     try {
-      const result = await this.chatCompletionService.getChatCompletion(
-        this.promptConstructor.createTranslateSegmentPrompt(
-          text,
-          template,
-          "Portuguese",
-          "French"
-        )
-      );
+      const result = await this.chatCompletionService.getChatCompletion(prompt);
 
       return this.parseResult(result);
     } catch (error) {
-      console.log(`Error translating text: "${text}"`, error);
-      return text;
+      console.log(`Error translating text: "${prompt}"`, error);
+      return prompt;
     }
   }
 
@@ -51,4 +31,4 @@ class TranslateService implements ITranslateService {
   }
 }
 
-export default new TranslateService(llmService, promptConstructor);
+export default new TranslateService(llmService);
