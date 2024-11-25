@@ -71,6 +71,7 @@ class TranslateAnnotationsService {
       return parsedResult;
     } catch (error) {
       console.error("Error in getTranslation method:", error);
+      return nextLine;
     }
   }
 
