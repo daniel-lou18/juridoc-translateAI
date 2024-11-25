@@ -3,13 +3,13 @@ import { BirthCertificate } from "../../../domain/birthCertificate/interfaces/Bi
 import { getAnnotationsFromRows } from "../../getAnnotationsFromRows";
 import { getFieldsFromRows } from "../../getFieldsFromRows";
 import { getRows } from "../../getRows";
-import { birthCertificateFieldMappings } from "./BirthCertificateKeyMap_PT";
-import { createAnnotations } from "./createAnnotations";
-import { createCertificateFields } from "./createCertificateFields";
-import { extractAnnotations } from "./extractAnnotations";
-import { extractCertificateFields } from "./extractCertificateFields";
-import translateAnnotationsService from "./translateAnnotationsService";
-import { translateCertificateFields } from "./translateCertificateFields";
+import { birthCertificateFieldMappings } from "../services/BirthCertificateKeyMap_PT";
+import { createAnnotations } from "../services/createAnnotations";
+import { createCertificateFields } from "../services/createCertificateFields";
+import { extractAnnotations } from "../services/extractAnnotations";
+import { extractCertificateFields } from "../services/extractCertificateFields";
+import translateAnnotationsService from "../services/translateAnnotationsService";
+import { translateCertificateFields } from "../services/translateCertificateFields";
 
 export type HtmlContent = [Element, Element] | Element;
 

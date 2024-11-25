@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { generateBirthCertificate } from "../../application/birthCertificate/services";
+import { generateBirthCertificate } from "../../application/birthCertificate/useCases/translateBirthCertificate";
 import { deserializeHtml } from "../../infrastructure/deserializeHtml";
 
 export async function createBirthCertificate(

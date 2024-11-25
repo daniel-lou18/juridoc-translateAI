@@ -1,5 +1,5 @@
 import llmService from "../../../infrastructure/LlmService";
-import promptConstructor from "../../../infrastructure/promptConstructor";
+import promptConstructor from "../../shared/promptConstructor";
 import { ITranslateService } from "./translateAnnotationsService";
 
 export interface ILlmService {
