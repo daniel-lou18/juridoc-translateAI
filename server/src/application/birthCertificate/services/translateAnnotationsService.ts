@@ -1,10 +1,11 @@
 import { Amendment } from "../../../domain/birthCertificate/interfaces/BirthCertificate";
 import llmService from "../../../infrastructure/shared/LlmService";
-import { createTranslatePrompt } from "../../shared/promptConstructor";
+import { createTranslatePrompt } from "../../../infrastructure/shared/promptConstructor";
 
 export interface ILlmService {
   getChatCompletion(prompt: string): Promise<string>;
 }
+
 type CreateAnnotations = (
   annotations: string[],
   idx: number

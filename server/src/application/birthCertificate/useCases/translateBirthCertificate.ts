@@ -1,13 +1,13 @@
 import { annotationsMapPtFr } from "../../../domain/birthCertificate/interfaces/annotationsMap_PT-FR";
 import { BirthCertificate } from "../../../domain/birthCertificate/interfaces/BirthCertificate";
-import { getAnnotationsFromRows } from "../../getAnnotationsFromRows";
-import { getFieldsFromRows } from "../../getFieldsFromRows";
-import { getRows } from "../../getRows";
+import { getAnnotationsFromRows } from "../../../infrastructure/birthCertificate/html/getAnnotationsFromRows";
+import { getFieldsFromRows } from "../../../infrastructure/birthCertificate/html/getFieldsFromRows";
+import { getRows } from "../../../infrastructure/shared/getRows";
 import { birthCertificateFieldMappings } from "../../../domain/birthCertificate/interfaces/BirthCertificateKeyMap_PT";
 import { createAnnotations } from "../../../domain/birthCertificate/services/createAnnotations";
 import { createCertificateFields } from "../../../domain/birthCertificate/services/createCertificateFields";
-import { extractAnnotations } from "../../../infrastructure/birthCertificate/extractAnnotations";
-import { extractCertificateFields } from "../../../infrastructure/birthCertificate/extractCertificateFields";
+import { extractAnnotations } from "../../../infrastructure/birthCertificate/html/extractAnnotations";
+import { extractCertificateFields } from "../../../infrastructure/birthCertificate/html/extractCertificateFields";
 import translateAnnotationsService from "../services/translateAnnotationsService";
 import { translateCertificateFields } from "../services/translateCertificateFields";
 

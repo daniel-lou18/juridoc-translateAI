@@ -1,12 +1,14 @@
+import { AutoParseableResponseFormat } from "openai/lib/parser";
+import { birthTemplateSchema } from "../birthCertificate/image/birthValidate";
 import httpClient, { IHttpClient } from "./httpClient";
 import { OpenAiChatCompletionResponse } from "./types";
+import { zodResponseFormat } from "openai/helpers/zod";
 
-interface ILlmService {
-  getChatCompletion(
-    prompt: string,
-    config?: Partial<OpenAiChatConfig["body"]>
-  ): Promise<string[]>;
+export interface ILlmClient {
+  getChatCompletion(messages: OpenAiMessages): Promise<string[]>;
 }
+
+export type OpenAiMessages = { role: string; content: string }[];
 
 type OpenAiChatConfig = {
   headers: {
@@ -15,8 +17,9 @@ type OpenAiChatConfig = {
   };
   body: {
     model: string;
-    messages: { role: string; content: string }[];
+    messages: OpenAiMessages;
     temperature: number;
+    response_format?: ReturnType<typeof zodResponseFormat>;
   };
 };
 
@@ -27,7 +30,7 @@ if (!API_KEY || !API_URL) {
   throw new Error("Missing OPENAI environment variables");
 }
 
-class OpenAiClient implements ILlmService {
+class OpenAiClient implements ILlmClient {
   private readonly url = API_URL!;
   private readonly config: OpenAiChatConfig;
 
@@ -49,7 +52,7 @@ class OpenAiClient implements ILlmService {
     };
   }
 
-  async getChatCompletion(prompt: string): Promise<string[]> {
+  async getChatCompletion(messages: OpenAiMessages): Promise<string[]> {
     try {
       const result = await this.httpClient.post<OpenAiChatCompletionResponse>(
         this.url,
@@ -57,10 +60,7 @@ class OpenAiClient implements ILlmService {
           headers: this.config.headers,
           body: JSON.stringify({
             ...this.config.body,
-            messages: [
-              ...this.config.body.messages,
-              { role: "user", content: prompt },
-            ],
+            messages: [...this.config.body.messages, ...messages],
           }),
         }
       );
@@ -81,4 +81,6 @@ class OpenAiClient implements ILlmService {
   }
 }
 
-export default new OpenAiClient(API_KEY, httpClient);
+export default new OpenAiClient(API_KEY, httpClient, {
+  response_format: zodResponseFormat(birthTemplateSchema, "birth-certificate"),
+});

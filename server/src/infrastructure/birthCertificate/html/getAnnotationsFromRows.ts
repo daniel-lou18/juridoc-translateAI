@@ -1,4 +1,4 @@
-import { cleanValue } from "./cleanString";
+import { cleanValue } from "../../shared/cleanString";
 
 export function getAnnotationsFromRows(rows: Element[]) {
   const data: string[] = [];

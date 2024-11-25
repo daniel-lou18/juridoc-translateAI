@@ -1,4 +1,4 @@
-import { cleanKey, cleanValue } from "./cleanString";
+import { cleanKey, cleanValue } from "../../shared/cleanString";
 
 export function getFieldsFromRows(rows: Element[]) {
   const data: Record<string, string> = {};
