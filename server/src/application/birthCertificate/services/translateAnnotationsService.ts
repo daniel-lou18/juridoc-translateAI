@@ -1,8 +1,10 @@
 import { Amendment } from "../../../domain/birthCertificate/interfaces/BirthCertificate";
 import llmService from "../../../infrastructure/LlmService";
 import { createTranslatePrompt } from "../../shared/promptConstructor";
-import { ILlmService } from "./translateService";
 
+export interface ILlmService {
+  getChatCompletion(prompt: string): Promise<string>;
+}
 type CreateAnnotations = (
   annotations: string[],
   idx: number
@@ -35,25 +37,8 @@ class TranslateAnnotationsService {
 
         const nextLine = annotations[idx + 1];
         const annotationsTemplate = this.getTemplate(nextLine, annotationsMap);
-        let result;
 
-        if (annotationsTemplate) {
-          const chatResult = await this.translateService.getChatCompletion(
-            createTranslatePrompt(
-              nextLine,
-              annotationsTemplate,
-              "Portuguese",
-              "French"
-            )
-          );
-          if (chatResult) {
-            result = this.parseResult(chatResult);
-          } else {
-            result = null;
-          }
-        } else {
-          result = nextLine;
-        }
+        const result = await this.getTranslation(nextLine, annotationsTemplate);
 
         results[parseInt(number) - 1] = {
           number,
@@ -64,6 +49,29 @@ class TranslateAnnotationsService {
       }
     }
     return results;
+  }
+
+  private async getTranslation(nextLine: string, annotationsTemplate: string) {
+    if (!annotationsTemplate) return nextLine;
+
+    try {
+      const prompt = createTranslatePrompt(
+        nextLine,
+        annotationsTemplate,
+        "Portuguese",
+        "French"
+      );
+      const chatResult = await this.translateService.getChatCompletion(prompt);
+
+      if (!chatResult) return nextLine;
+
+      const parsedResult = this.parseResult(chatResult);
+      if (!parsedResult) return nextLine;
+
+      return parsedResult;
+    } catch (error) {
+      console.error("Error in getTranslation method:", error);
+    }
   }
 
   private getTemplate(textSegment: string, dictionary: Record<string, string>) {
