@@ -1,10 +1,7 @@
 import { Amendment } from "../../../domain/birthCertificate/interfaces/BirthCertificate";
+import llmService from "../../../infrastructure/LlmService";
 import { createTranslatePrompt } from "../../shared/promptConstructor";
-import translateService from "./translateService";
-
-export interface ITranslateService {
-  translateAnnotationLlm(prompt: string): Promise<string>;
-}
+import { ILlmService } from "./translateService";
 
 type CreateAnnotations = (
   annotations: string[],
@@ -18,7 +15,7 @@ type CreateAnnotations = (
 };
 
 class TranslateAnnotationsService {
-  constructor(private translateService: ITranslateService) {}
+  constructor(private translateService: ILlmService) {}
 
   async translateAnnotations(
     annotations: string[],
@@ -41,7 +38,7 @@ class TranslateAnnotationsService {
         let result;
 
         if (annotationsTemplate) {
-          result = await this.translateService.translateAnnotationLlm(
+          const chatResult = await this.translateService.getChatCompletion(
             createTranslatePrompt(
               nextLine,
               annotationsTemplate,
@@ -49,6 +46,11 @@ class TranslateAnnotationsService {
               "French"
             )
           );
+          if (chatResult) {
+            result = this.parseResult(chatResult);
+          } else {
+            result = null;
+          }
         } else {
           result = nextLine;
         }
@@ -71,6 +73,17 @@ class TranslateAnnotationsService {
 
     return annotationsTemplate;
   }
+
+  private parseResult(result: string) {
+    const parsedResult =
+      result.match(
+        /### START ANSWER ###\n([\s\S]*?)\n### END ANSWER ###/
+      )?.[1] ||
+      result ||
+      "";
+
+    return parsedResult.trim();
+  }
 }
 
-export default new TranslateAnnotationsService(translateService);
+export default new TranslateAnnotationsService(llmService);
